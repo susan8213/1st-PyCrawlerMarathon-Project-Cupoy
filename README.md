@@ -202,6 +202,7 @@ jieba.load_userdict(dict_path)
 斷詞的結果，裏面包含了很多標點符號、連接詞等較無意義無用的詞彙
 
 因此需要透過設定停用詞(stop words)辭庫，將不希望被抽取成為關鍵字的無異議詞彙過濾掉
+
 ```jieba.analyse.set_stop_words(stop_words_dict_path)```
 
 Jieba 提供了兩種抽取關鍵字的演算法
@@ -254,4 +255,11 @@ wc.to_file(img_filename)
 
 04 <a name="conclusion"></a>Conclusion 結論
 ---
-總結本次專題的問題與結果。
+
+不管是對不同媒體新聞網站的爬蟲方式，抑或是關鍵字抽取的字典、停用字字典設定，都還有很多的修正空間。
+但基於為追求專題的完整性，這些小小的不足，我認為無傷大雅，又不是要做成產品哈哈。
+
+在這次的專題，實際看到、運用到了之前許多課程講過的概念與工具，善用Chrome Dev Tools 分析不同的網頁類型(靜態、動態、API)的，找尋對症下藥的爬蟲方式，也應對了一些網頁的防禦機制(像是須在header設定 UserAgent 或是 over18)。還學到了其他新的module "newspaper"、"Jieba" 以及 "WordCloud"。
+
+最後，專題讓我更了解爬蟲的應用情境，未來肯定還有很多機會使用爬蟲技術，來讓生活更自動化XD。
+
