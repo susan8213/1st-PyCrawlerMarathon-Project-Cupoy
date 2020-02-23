@@ -170,13 +170,86 @@ newspaper 雖然強大，但仍然有很多新聞無法被解析。因此利用 
 
 #### 3. 關鍵字分析
 
+##### -Jieba 關鍵字抽取
+
+文章斷詞: 爬蟲下來的每篇新聞內文，透過 jieba.cut 或 jieba.lcut 將句子截斷成詞彙
+```
+# jieba.cut  回傳 generator，要用for loop 取值
+# jieba.lcut 回傳 list，可直接取用
+# 全模式
+seg_list = jieba.cut(text, cut_all=True)
+seg_list = jieba.lcut(text, cut_all=True)
+# 默認模式
+seg_list = jieba.cut(text, cut_all=False)
+seg_list = jieba.lcut(text, cut_all=False)
+```
+
+而斷詞的依據，是來自事先建立好的字典，因此需設定Jieba字典辭庫
+
+若不滿意 Jieba 斷詞的結果，可使用 jieba.add_word() 增加字典詞彙、jieba.del_word() 刪除字典中不適合的詞彙
+```
+# 設定詞庫
+jieba.set_dictionary(dict_path)
+# 載入自定義詞庫
+jieba.load_userdict(dict_path)
+# 加入字詞
+# jieba.add_word(word, freq=None, tag=None)
+# jieba.add_word('武漢肺炎')
+# 刪除字詞
+# jieba.del_word(word)
+```
+
+斷詞的結果，裏面包含了很多標點符號、連接詞等較無意義無用的詞彙
+
+因此需要透過設定停用詞(stop words)辭庫，將不希望被抽取成為關鍵字的無異議詞彙過濾掉
+```jieba.analyse.set_stop_words(stop_words_dict_path)```
+
+Jieba 提供了兩種抽取關鍵字的演算法
+```
+# text=欲抽取關鍵字的文章
+# topK=抽取關鍵字的數量
+# withWeight=抽取的關鍵字是否需附加其weighting
+# allowPOS=詞性過濾器，指抽取被指定的詞性關鍵字
+
+# TF-IDF
+jieba.analyse.extract_tags(text, topK=200, withWeight=True, allowPOS=('n', 'ns', 'v', 'vn'))
+# Text Rank
+jieba.analyse.textrank(text, topK=200, withWeight=True, allowPOS=('n', 'ns', 'v', 'vn'))
+```
+
+##### -WordCloud
+
+WordCloud 本身也能做關鍵字抽取，但因上述已練習了如何用Jieba抽取關鍵字，所以不另外用WordCloud做關鍵字抽取
+
+以下為產生文字雲的範例程式
+
+```
+from wordcloud import WordCloud
+
+# 在 constructor WordCloud 中設定想要的文字雲風格
+# 因 WordCloud 本身並無支援中文字型，需另外設定字型檔
+wc = WordCloud(background_color='black', 
+               font_path=chinese_font_path))
+
+# 用 jieba 抽取出的關鍵字以及其對應的weighting 來產生文字雲
+wc.generate_from_frequencies(keywords_withWeight)
+# 將產生的文字雲寫成檔案
+wc.to_file(img_filename)
+```
+
+
 03 <a name="demo"></a>Demonstration 成果展示
 ---
-介紹成果的特點為何，並撰寫⼼心得。
+介紹成果的特點為何，並撰寫心得。
 
 [Jupyter Notebook: 新聞爬蟲](https://github.com/susan8213/1st-PyCrawlerMarathon-Project-Cupoy/blob/master/cupoy_crawler.ipynb)
 
 [Jupyter Notebook: 關鍵字分析](https://github.com/susan8213/1st-PyCrawlerMarathon-Project-Cupoy/blob/master/jieba_analysis.ipynb)
+
+文字雲結果:
+
+![wordcloud_idf](img/wordcloud_idf.png)
+![wordcloud_idf_mask](img/wordcloud_idf_mask.png)
 
 
 04 <a name="conclusion"></a>Conclusion 結論
