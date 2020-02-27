@@ -61,7 +61,7 @@ Cupoy獲取新聞的API `MixNewsAction.do` 在這次專題中會用的兩支分�
 將每一批次的 request process 丟到 `Pool` 中，由 `Pool` 根據 cpu resource 控制同時執行的 process 數量，並收回每個process的output。
 
 程式碼
-```
+```Python
 from multiprocessing import Pool
 with Pool() as pool:
     results = [pool.apply_async(function_for_process, (startNewsID, )) 
@@ -144,7 +144,7 @@ API回傳的資料結構中，發現每篇新聞有四種熱門分數，包括 *
 
 若是指定新聞連結，也只需幾行程式就能利用newspaper將不同新聞網站的新聞內文爬取下來:
 
-```
+```Python
 article = Article(url) # constructor: 輸入欲爬取的新聞url
 article.download()     # 下載新聞 html
 article.parse()        # 解析新聞內文
@@ -173,7 +173,7 @@ newspaper 雖然強大，但仍然有很多新聞無法被解析。因此利用 
 ##### -Jieba 關鍵字抽取
 
 文章斷詞: 爬蟲下來的每篇新聞內文，透過 jieba.cut 或 jieba.lcut 將句子截斷成詞彙
-```
+```Python
 # jieba.cut  回傳 generator，要用for loop 取值
 # jieba.lcut 回傳 list，可直接取用
 # 全模式
@@ -187,7 +187,7 @@ seg_list = jieba.lcut(text, cut_all=False)
 而斷詞的依據，是來自事先建立好的字典，因此需設定Jieba字典辭庫
 
 若不滿意 Jieba 斷詞的結果，可使用 jieba.add_word() 增加字典詞彙、jieba.del_word() 刪除字典中不適合的詞彙
-```
+```Python
 # 設定詞庫
 jieba.set_dictionary(dict_path)
 # 載入自定義詞庫
@@ -203,10 +203,12 @@ jieba.load_userdict(dict_path)
 
 因此需要透過設定停用詞(stop words)辭庫，將不希望被抽取成為關鍵字的無異議詞彙過濾掉
 
-```jieba.analyse.set_stop_words(stop_words_dict_path)```
+```Python
+jieba.analyse.set_stop_words(stop_words_dict_path)
+```
 
 Jieba 提供了兩種抽取關鍵字的演算法
-```
+```Python
 # text=欲抽取關鍵字的文章
 # topK=抽取關鍵字的數量
 # withWeight=抽取的關鍵字是否需附加其weighting
@@ -224,7 +226,7 @@ WordCloud 本身也能做關鍵字抽取，但因上述已練習了如何用Jieb
 
 以下為產生文字雲的範例程式
 
-```
+```Python
 from wordcloud import WordCloud
 
 # 在 constructor WordCloud 中設定想要的文字雲風格
